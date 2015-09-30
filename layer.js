@@ -23,38 +23,65 @@ window.onload = function() {
     //     }).addTo(map);
 
     //El estilo para la capa de usos de suelo
-    s1 = "#usos_colonia{\
+    s1 = "#viz_uso_suelo{\
             polygon-fill: #FFFFB2;\
             polygon-opacity: 0.8;\
             line-color: #FFF;\
             line-width: 0.1;\
             line-opacity: 1;\
           }\
-          #usos_colonia [ entropia <= 0.822853671464274] {\
+          #viz_uso_suelo [ entropia <= 0.822853671464274] {\
              polygon-fill: #B10026;\
           }\
-          #usos_colonia [ entropia <= 0.487766945422883] {\
+          #viz_uso_suelo [ entropia <= 0.487766945422883] {\
              polygon-fill: #E31A1C;\
           }\
-          #usos_colonia [ entropia <= 0.34212827696922] {\
+          #viz_uso_suelo [ entropia <= 0.34212827696922] {\
              polygon-fill: #FC4E2A;\
           }\
-          #usos_colonia [ entropia <= 0.30266251565322] {\
+          #viz_uso_suelo [ entropia <= 0.30266251565322] {\
              polygon-fill: #FD8D3C;\
           }\
-          #usos_colonia [ entropia <= 0.237916871657603] {\
+          #viz_uso_suelo [ entropia <= 0.237916871657603] {\
              polygon-fill: #FEB24C;\
           }\
-          #usos_colonia [ entropia <= 0.166048720217869] {\
+          #viz_uso_suelo [ entropia <= 0.166048720217869] {\
              polygon-fill: #FED976;\
           }\
-          #usos_colonia [ entropia <= 0.16026284961159] {\
+          #viz_uso_suelo [ entropia <= 0.16026284961159] {\
              polygon-fill: #FFFFB2;\
          }"
 
-
+    s2 = "#viz_uso_suelo{\
+        polygon-fill: #0C2C84;\
+        polygon-opacity: 0.8;\
+        line-color: #FFF;\
+        line-width: 0.1;\
+        line-opacity: 1;\
+        }\
+        #viz_uso_suelo [ entropia <= 0] {\
+           polygon-fill: #FFFFCC;\
+        }\
+        #viz_uso_suelo [ entropia <= -0.13944865767] {\
+           polygon-fill: #C7E9B4;\
+        }\
+        #viz_uso_suelo [ entropia <= -0.21591676922] {\
+           polygon-fill: #7FCDBB;\
+        }\
+        #viz_uso_suelo [ entropia <= -0.25192868914] {\
+           polygon-fill: #41B6C4;\
+        }\
+        #viz_uso_suelo [ entropia <= -0.3084367162] {\
+           polygon-fill: #1D91C0;\
+        }\
+        #viz_uso_suelo [ entropia <= -0.31444038422] {\
+           polygon-fill: #225EA8;\
+        }\
+        #viz_uso_suelo [ entropia <= -0.43021888381] {\
+           polygon-fill: #0C2C84;\
+       }"
     //La fuente de datos para la capa
-    q1 = 'select * from usos_colonia'
+    q1 = 'select * from viz_uso_suelo'
     var layerSource = {
       user_name: 'plabloedu',
       type: 'cartodb',
@@ -62,7 +89,7 @@ window.onload = function() {
         {
           sql: q1,
           interactivity: 'cartodb_id,the_geom',
-          cartocss: s1
+          cartocss: s2
         }
     ]};
 
@@ -80,9 +107,9 @@ window.onload = function() {
 
 
     //Con esta consulta agarramos los datos promedio para incluirlos siempre
-    //en la gráfica de radar
+    //en la gráfica de radarservicios
     var sqlAvg = new cartodb.SQL({ user: 'plabloedu' });
-    var sqlStr = "SELECT avg(vivienda) as v_pro, avg(comercio) as c_pro, avg(equip) as e_pro, avg(ocio) as o_pro FROM usos_colonia"
+    var sqlStr = "SELECT avg(vivienda) as v_pro, avg(comercio) as c_pro, avg(servicios) as e_pro, avg(ocio) as o_pro FROM viz_uso_suelo"
     sqlAvg.execute(sqlStr)
       .done(function(data) {
           //Llamamos la función para hacer la gráfica de radar
@@ -105,7 +132,7 @@ window.onload = function() {
         // Traemos la geometría del polígono clickeado
         function fetchGeometry(id){
             var sql = new cartodb.SQL({ user: username, format: 'geojson' });
-            sql_stmt = "select cartodb_id, nombre, vivienda, comercio, equip, ocio, the_geom  from (" +layer.getSQL() + ") as _wrap where _wrap.cartodb_id="+ id
+            sql_stmt = "select cartodb_id, nombre, vivienda, comercio, servicios, ocio, the_geom  from (" +layer.getSQL() + ") as _wrap where _wrap.cartodb_id="+ id
             sql.execute(sql_stmt).
             done(function(geojson) {
                 //Cuando el query regrese los datos, agarramos su geometría,
@@ -120,7 +147,7 @@ window.onload = function() {
                 //Actualizamos la gráfica de radar
                 updateRadar(geojson)
                 var sql = new cartodb.SQL({ user: username });
-                var queryBounds = "select the_geom from usos_colonia where cartodb_id=" + id
+                var queryBounds = "select the_geom from viz_uso_suelo where cartodb_id=" + id
                 sql.getBounds(queryBounds).done(function(bounds) {
                     map.fitBounds(bounds)
                 })

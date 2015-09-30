@@ -80,7 +80,7 @@ function updateRadar(data){
 			axes: [
 			{axis: "vivienda", value: 0.01*variables.vivienda},
 			{axis: "comercio", value: 0.1*variables.comercio},
-			{axis: "servicios", value: variables.equip},
+			{axis: "servicios", value: variables.servicios},
 			{axis: "ocio", value: variables.ocio}
 			]
 		}
