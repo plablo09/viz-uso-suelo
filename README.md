@@ -3,7 +3,7 @@
 Explorador de la mezcla de usos de suelo a nivel colonia para toda la Zona Metropolitana del Valle de México
 
 * El preprocesamiento lo hice en Postgres/PostGis
-* El mapa está hecho en carto db
+* El mapa está hecho en cartodb
 * La gráfica de radar está hecha en d3.js
 
 ## Instalación

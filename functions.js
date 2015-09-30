@@ -91,3 +91,14 @@ function updateRadar(data){
 	game.call(chart); //para actualizar chart - no es necesario llamar exit().remove()
 
 }
+
+$( "#clickme" ).click(function() {
+	$( "#help-text" ).show( "slow", function() {
+		// Animation complete.
+	});
+});
+$("#close").click(function() {
+	$( "#help-text" ).hide( "slow", function() {
+		// Animation complete.
+	});
+});
