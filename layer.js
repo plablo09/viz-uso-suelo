@@ -193,4 +193,9 @@ window.onload = function() {
     .on('error',function(){
         cartodb.log.log("some error occurred");
     });
+    var legend = new cartodb.geo.ui.Legend.Density({
+         		title:   "Mezcla de usos de suelo",
+            	left: "Baja", right: "Alta", colors: [ "#FFFFCC", "#C7E9B4", "#7FCDBB", "#41B6C4", "#1D91C0", "#225EA8", "#0C2C84"  ]
+            });
+            $('#map').append(legend.render().el);
 }
