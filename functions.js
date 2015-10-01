@@ -27,22 +27,22 @@ function hazRadar(data){
 			}else{
 				valor = d[0].value
 			}
-			miHTML = "Variable: " + d[0].axis + " <br>" +
-					 "Valor: <span style='color:red'>" + valor + "</span>"
+			miHTML = "<span style='color:#FFDBAA'>Variable: " + d[0].axis + "</span><br>" +
+					 "<span style='color:#FFDBAA'>Valor: " + valor + "</span>"
 		}else{
 			//hover:polígono
 			if (d.className == 'promedios'){
 				miHTML = "Valores promedio<br> " +
-						 " Vivienda:  <span style='color:red'>" + d.axes[0].value*100 + "</span> <br>" +
-						 " Comercio:  <span style='color:red'>" + d.axes[1].value*10 + "</span> <br>" +
-						 " Servicios:  <span style='color:red'>" + d.axes[2].value + "</span> <br>" +
-						 " Ocio:  <span style='color:red'>" + d.axes[3].value + "</span>"
+						 "<span style='color:#FFDBAA'>Vivienda: " + d.axes[0].value*100 + "</span> <br>" +
+						 "<span style='color:#FFDBAA'>Comercio: " + d.axes[1].value*10 + "</span> <br>" +
+						 "<span style='color:#FFDBAA'>Servicios: " + d.axes[2].value + "</span> <br>" +
+						 "<span style='color:#FFDBAA'>Ocio: " + d.axes[3].value + "</span>"
 			}else{
-				miHTML = "Colonia: <span style='color:red'>" + d.colonia + "</span> <br> " +
-						"Vivienda: <span style='color:red'>" + d.axes[0].value*100 + "</span> <br>" +
-						"Comercio: <span style='color:red'>" + d.axes[1].value*10 + "</span> <br>" +
-						"Servicios: <span style='color:red'>" + d.axes[2].value + "</span> <br>" +
-						"Ocio: <span style='color:red'>" + d.axes[3].value + "</span>"
+				miHTML = "<span style='color:#FFDBAA'>Colonia: " + d.colonia + "</span> <br> " +
+						"<span style='color:#FFDBAA'>Vivienda: " + d.axes[0].value*100 + "</span> <br>" +
+						"<span style='color:#FFDBAA'>Comercio: " + d.axes[1].value*10 + "</span> <br>" +
+						"<span style='color:#FFDBAA'>Servicios: " + d.axes[2].value + "</span> <br>" +
+						"<span style='color:#FFDBAA'>Ocio: " + d.axes[3].value + "</span>"
 			}
 
 		}
