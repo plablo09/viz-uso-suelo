@@ -97,9 +97,9 @@ window.onload = function() {
     //El estilo para resaltar el polígono
     var HIGHLIGHT_STYLE = {
         weight: 0.8,
-        color: '#483D8B',
+        color: '#4C6BDAE',
         opacity: 0.5,
-        fillColor: '#483D8B',
+        fillColor: '#C6BDAE',
         fillOpacity: 0.8
     };
     //Colgamos el estilo a la propiedad style de las opciones (si no la tiene)
