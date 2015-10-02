@@ -15,44 +15,8 @@ window.onload = function() {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
     }).addTo(map);
 
-    // L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png', {
-    //     attribution: '\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors \u00a9 <a href=\"http://cartodb.com/attributions#basemaps\">CartoDB</a>'
-    // }).addTo(map);
-    // L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
-    //     attribution: 'Stamen'
-    //     }).addTo(map);
-
     //El estilo para la capa de usos de suelo
-    s1 = "#viz_uso_suelo{\
-            polygon-fill: #FFFFB2;\
-            polygon-opacity: 0.8;\
-            line-color: #FFF;\
-            line-width: 0.1;\
-            line-opacity: 1;\
-          }\
-          #viz_uso_suelo [ entropia <= 0.822853671464274] {\
-             polygon-fill: #B10026;\
-          }\
-          #viz_uso_suelo [ entropia <= 0.487766945422883] {\
-             polygon-fill: #E31A1C;\
-          }\
-          #viz_uso_suelo [ entropia <= 0.34212827696922] {\
-             polygon-fill: #FC4E2A;\
-          }\
-          #viz_uso_suelo [ entropia <= 0.30266251565322] {\
-             polygon-fill: #FD8D3C;\
-          }\
-          #viz_uso_suelo [ entropia <= 0.237916871657603] {\
-             polygon-fill: #FEB24C;\
-          }\
-          #viz_uso_suelo [ entropia <= 0.166048720217869] {\
-             polygon-fill: #FED976;\
-          }\
-          #viz_uso_suelo [ entropia <= 0.16026284961159] {\
-             polygon-fill: #FFFFB2;\
-         }"
-
-    s2 = "#viz_uso_suelo{\
+    var s1 = "#viz_uso_suelo{\
         polygon-fill: #0C2C84;\
         polygon-opacity: 0.8;\
         line-color: #FFF;\
@@ -79,7 +43,69 @@ window.onload = function() {
         }\
         #viz_uso_suelo [ entropia <= -0.43021888381] {\
            polygon-fill: #0C2C84;\
-       }"
+       }";
+    //El estilo para la capa de densidad
+    var s2 = "#viz_uso_suelo{\
+              polygon-fill: #FFFFB2;\
+              polygon-opacity: 0.8;\
+              line-color: #FFF;\
+              line-width: 0.1;\
+              line-opacity: 1;\
+            }\
+            #viz_uso_suelo [ densidad <= 2.35421882502024] {\
+               polygon-fill: #B10026;\
+            }\
+            #viz_uso_suelo [ densidad <= 0.0112180552820973] {\
+               polygon-fill: #E31A1C;\
+            }\
+            #viz_uso_suelo [ densidad <= 0.00827701895983596] {\
+               polygon-fill: #FC4E2A;\
+            }\
+            #viz_uso_suelo [ densidad <= 0.00590398538075461] {\
+               polygon-fill: #FD8D3C;\
+            }\
+            #viz_uso_suelo [ densidad <= 0.00384617050102022] {\
+               polygon-fill: #FEB24C;\
+            }\
+            #viz_uso_suelo [ densidad <= 0.00206917875889399] {\
+               polygon-fill: #FED976;\
+            }\
+            #viz_uso_suelo [ densidad <= 0.000806532607835758] {\
+               polygon-fill: #FFFFB2;\
+           }";
+    //El estilo para la capa de intensidad
+    var s3 = "#viz_uso_suelo{\
+              polygon-fill: #F1EEF6;\
+              polygon-opacity: 0.8;\
+              line-color: #FFF;\
+              line-width: 0.1;\
+              line-opacity: 1;\
+            }\
+            #viz_uso_suelo [ intensidad <= 22565] {\
+               polygon-fill: #91003F;\
+            }\
+            #viz_uso_suelo [ intensidad <= 834] {\
+               polygon-fill: #CE1256;\
+            }\
+            #viz_uso_suelo [ intensidad <= 524] {\
+               polygon-fill: #E7298A;\
+            }\
+            #viz_uso_suelo [ intensidad <= 371] {\
+               polygon-fill: #DF65B0;\
+            }\
+            #viz_uso_suelo [ intensidad <= 267] {\
+               polygon-fill: #C994C7;\
+            }\
+            #viz_uso_suelo [ intensidad <= 175] {\
+               polygon-fill: #D4B9DA;\
+            }\
+            #viz_uso_suelo [ intensidad <= 87] {\
+               polygon-fill: #F1EEF6;\
+           }";
+
+
+
+
     //La fuente de datos para la capa
     q1 = 'select * from viz_uso_suelo'
     var layerSource = {
@@ -89,8 +115,18 @@ window.onload = function() {
         {
           sql: q1,
           interactivity: 'cartodb_id,the_geom',
-          cartocss: s2
-        }
+          cartocss: s1
+      },
+      {
+        sql: q1,
+        interactivity: 'cartodb_id,the_geom',
+        cartocss: s2
+    },
+    {
+      sql: q1,
+      interactivity: 'cartodb_id,the_geom',
+      cartocss: s3
+    }
     ]};
 
     options = options || {}//Si no nos pasan opciones, instanciamos unas vacías
@@ -177,25 +213,62 @@ window.onload = function() {
         }
 
         layer.on('featureClick', featureClick);
-        //layer.on('featureOut', featureOut);
         layer.setInteraction(true);
 
     }
 
-
+    function createSelector(layer,num) {
+     for (var i = 0; i < layer.getSubLayerCount(); i++) {
+      if (i === num) {
+        layer.getSubLayer(i).show();
+      } else {
+        layer.getSubLayer(i).hide();
+      }
+     }
+     if (num === 0){
+         $(legendMix.render().el).show();
+         $(legendIntensity.render().el).hide();
+         $(legendDensity.render().el).hide();
+     }else if (num === 1) {
+         $(legendMix.render().el).hide();
+         $(legendIntensity.render().el).hide();
+         $(legendDensity.render().el).show();
+     }else {
+         $(legendMix.render().el).hide();
+         $(legendIntensity.render().el).show();
+         $(legendDensity.render().el).hide();
+     }
+    }
     //Instanciamos la capa a partir de la fuente de datos
     cartodb.createLayer(map, layerSource, {cartodb_logo: false})
     .addTo(map)
-    .on('done',function(layer){//Aquí colgamos la función que maneja la interactividad
-        //console.log('capaaaaa')
+    .on('done',function(layer){
+        //La función para cambiar de capa
+        $("li").on('click', function(e) {
+                    var num = +$(e.target).attr('data');
+                    createSelector(layer,num);
+                  });
+        //Queremos que inicie con la capa de mezcla (la 0)
+        createSelector(layer,0);
+        $('#map').append(legendMix.render().el);
+        $('#map').append(legendDensity.render().el);
+        $('#map').append(legendIntensity.render().el);
+        //La función para manejar los clicks y seleccionar features
         geometryClick('plabloedu', map, layer.getSubLayer(0));
     })
     .on('error',function(){
         cartodb.log.log("some error occurred");
     });
-    var legend = new cartodb.geo.ui.Legend.Density({
+    var legendMix = new cartodb.geo.ui.Legend.Density({
          		title:   "Mezcla de usos de suelo",
             	left: "Baja", right: "Alta", colors: [ "#FFFFCC", "#C7E9B4", "#7FCDBB", "#41B6C4", "#1D91C0", "#225EA8", "#0C2C84"  ]
             });
-            $('#map').append(legend.render().el);
+    var legendDensity = new cartodb.geo.ui.Legend.Density({
+         		title:   "Densidad del uso de suelo",
+            	left: "Baja", right: "Alta", colors: [ "#B10026", "#E31A1C", "#FC4E2A", "#FD8D3C", "#FEB24C", "#FED976", "#FFFFB2"  ]
+            });
+    var legendIntensity = new cartodb.geo.ui.Legend.Density({
+         		title:   "Intensidad de uso de suelo",
+            	left: "Baja", right: "Alta", colors: [ "#91003F", "#CE1256", "#E7298A", "#DF65B0", "#C994C7", "#D4B9DA", "#F1EEF6"  ]
+            });
 }
