@@ -20,7 +20,7 @@ window.onload = function() {
         polygon-fill: #0C2C84;\
         polygon-opacity: 0.8;\
         line-color: #FFF;\
-        line-width: 0.1;\
+        line-width: 0.05;\
         line-opacity: 1;\
         }\
         #viz_uso_suelo [ entropia <= 0] {\
@@ -49,7 +49,7 @@ window.onload = function() {
               polygon-fill: #FFFFB2;\
               polygon-opacity: 0.8;\
               line-color: #FFF;\
-              line-width: 0.1;\
+              line-width: 0.05;\
               line-opacity: 1;\
             }\
             #viz_uso_suelo [ densidad <= 2.35421882502024] {\
@@ -78,29 +78,29 @@ window.onload = function() {
               polygon-fill: #F1EEF6;\
               polygon-opacity: 0.8;\
               line-color: #FFF;\
-              line-width: 0.1;\
+              line-width: 0.05;\
               line-opacity: 1;\
             }\
             #viz_uso_suelo [ intensidad <= 22565] {\
-               polygon-fill: #91003F;\
+               polygon-fill: #C1373C;\
             }\
             #viz_uso_suelo [ intensidad <= 834] {\
-               polygon-fill: #CE1256;\
+               polygon-fill:  #CC4E52;\
             }\
             #viz_uso_suelo [ intensidad <= 524] {\
-               polygon-fill: #E7298A;\
+               polygon-fill: #D4686C;\
             }\
             #viz_uso_suelo [ intensidad <= 371] {\
-               polygon-fill: #DF65B0;\
+               polygon-fill: #DB8286;\
             }\
             #viz_uso_suelo [ intensidad <= 267] {\
-               polygon-fill: #C994C7;\
+               polygon-fill: #E39D9F;\
             }\
             #viz_uso_suelo [ intensidad <= 175] {\
-               polygon-fill: #D4B9DA;\
+               polygon-fill: #EBB7B9;\
             }\
             #viz_uso_suelo [ intensidad <= 87] {\
-               polygon-fill: #F1EEF6;\
+               polygon-fill: #F2D2D3;\
            }";
 
 
@@ -199,6 +199,7 @@ window.onload = function() {
         //Llama a las funciones que actualizan el polígono seleccionado
         function featureClick(e, pos, latlng, data) {
             //console.log(data)
+            console.log('heyyyy');
             featureOut();
             fetchGeometry(data.cartodb_id)
         }
@@ -265,10 +266,10 @@ window.onload = function() {
             });
     var legendDensity = new cartodb.geo.ui.Legend.Density({
          		title:   "Densidad del uso de suelo",
-            	left: "Baja", right: "Alta", colors: [ "#B10026", "#E31A1C", "#FC4E2A", "#FD8D3C", "#FEB24C", "#FED976", "#FFFFB2"  ]
+            	left: "Baja", right: "Alta", colors: [ "#FFFFB2","#FED976","#FEB24C","#FD8D3C","#FC4E2A","#E31A1C","#B10026"]
             });
     var legendIntensity = new cartodb.geo.ui.Legend.Density({
          		title:   "Intensidad de uso de suelo",
-            	left: "Baja", right: "Alta", colors: [ "#91003F", "#CE1256", "#E7298A", "#DF65B0", "#C994C7", "#D4B9DA", "#F1EEF6"  ]
+            	left: "Baja", right: "Alta", colors: [ "#F2D2D3", "#EBB7B9", "#E39D9F", "#DB8286", "#D4686C", "#CC4E52", "#C1373C"  ]
             });
 }
